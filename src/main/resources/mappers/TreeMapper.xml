@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zll.ssm.dao.TreeDAO">
+  <resultMap id="BaseResultMap" type="com.zll.ssm.pojo.Tree">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <sql id="sql_column">
+    id, pid, `name`
+  </sql>
+  <sql id="sql_if_and">
+    <if test="pid != null">
+      and pid = #{pid}
+    </if>
+    <if test="name != null">
+      and `name` = #{name}
+    </if>
+  </sql>
+  <sql id="sql_where">
+    <if test="pid != null">
+      pid = #{pid},
+    </if>
+    <if test="name != null">
+      `name` = #{name},
+    </if>
+  </sql>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zll.ssm.pojo.Tree" useGeneratedKeys="true">
+    insert into tree (pid, `name`)
+    values (#{pid}, #{name})
+  </insert>
+  <insert id="save" keyColumn="id" keyProperty="id" parameterType="com.zll.ssm.pojo.Tree" useGeneratedKeys="true">
+    insert into tree
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid},
+      </if>
+      <if test="name != null">
+        #{name},
+      </if>
+    </trim>
+  </insert>
+  <insert id="saveBatch" parameterType="java.util.List">
+    insert into tree
+    (pid, `name`)
+    values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.pid != null">
+          #{item.pid},
+        </if>
+        <if test="item.pid == null">
+          NULL,
+        </if>
+        <if test="item.name != null">
+          #{item.name},
+        </if>
+        <if test="item.name == null">
+          NULL,
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from tree
+    where id = #{id}
+  </select>
+  <select id="get" parameterType="com.zll.ssm.pojo.Tree" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from tree
+    <where>
+      <include refid="sql_if_and" />
+        and id = #{id}
+    </where>
+  </select>
+  <update id="update" parameterType="com.zll.ssm.pojo.Tree">
+    update tree
+    <set>
+      <include refid="sql_where" />
+    </set>
+    where id = #{id}
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from tree
+    where id = #{id}
+  </delete>
+  <select id="selectList" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from tree
+  </select>
+  <select id="total" resultType="java.lang.Integer">
+    select count(1) from tree
+  </select>
+</mapper>

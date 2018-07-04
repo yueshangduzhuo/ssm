@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zll.ssm.dao.UserDAO">
+  <resultMap id="BaseResultMap" type="com.zll.ssm.pojo.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+  </resultMap>
+  <sql id="sql_column">
+    id, user_name, pwd, age
+  </sql>
+  <sql id="sql_if_and">
+    <if test="userName != null">
+      and user_name = #{userName}
+    </if>
+    <if test="pwd != null">
+      and pwd = #{pwd}
+    </if>
+    <if test="age != null">
+      and age = #{age}
+    </if>
+  </sql>
+  <sql id="sql_where">
+    <if test="userName != null">
+      user_name = #{userName},
+    </if>
+    <if test="pwd != null">
+      pwd = #{pwd},
+    </if>
+    <if test="age != null">
+      age = #{age},
+    </if>
+  </sql>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zll.ssm.pojo.User" useGeneratedKeys="true">
+    insert into user (user_name, pwd, age)
+    values (#{userName}, #{pwd}, #{age})
+  </insert>
+  <insert id="save" keyColumn="id" keyProperty="id" parameterType="com.zll.ssm.pojo.User" useGeneratedKeys="true">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="pwd != null">
+        pwd,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        #{userName},
+      </if>
+      <if test="pwd != null">
+        #{pwd},
+      </if>
+      <if test="age != null">
+        #{age},
+      </if>
+    </trim>
+  </insert>
+  <insert id="saveBatch" parameterType="java.util.List">
+    insert into user
+    (user_name, pwd, age)
+    values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.userName != null">
+          #{item.userName},
+        </if>
+        <if test="item.userName == null">
+          NULL,
+        </if>
+        <if test="item.pwd != null">
+          #{item.pwd},
+        </if>
+        <if test="item.pwd == null">
+          NULL,
+        </if>
+        <if test="item.age != null">
+          #{item.age},
+        </if>
+        <if test="item.age == null">
+          NULL,
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from user
+    where id = #{id}
+  </select>
+  <select id="get" parameterType="com.zll.ssm.pojo.User" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from user
+    <where>
+      <include refid="sql_if_and" />
+        and id = #{id}
+    </where>
+  </select>
+  <update id="update" parameterType="com.zll.ssm.pojo.User">
+    update user
+    <set>
+      <include refid="sql_where" />
+    </set>
+    where id = #{id}
+  </update>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id}
+  </delete>
+  <select id="selectList" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from user
+  </select>
+  <select id="list" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="sql_column" />
+    from user
+    <where>
+      <include refid="sql_if_and" />
+    </where>
+  </select>
+  <select id="total" resultType="java.lang.Integer">
+    select count(1) from user
+  </select>
+</mapper>

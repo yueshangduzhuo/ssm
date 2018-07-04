@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zll.ssm.dao.TestDAO">
+  <resultMap id="BaseResultMap" type="com.zll.ssm.pojo.Test">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id1" jdbcType="INTEGER" property="id1" />
+    <result column="date_time" jdbcType="TIMESTAMP" property="dateTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="test" jdbcType="VARCHAR" property="test" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="json" jdbcType="CHAR" property="json" />
+    <result column="text" jdbcType="LONGVARCHAR" property="text" />
+    <result column="long_text" jdbcType="LONGVARCHAR" property="longText" />
+  </resultMap>
+  <sql id="sql_column">
+    id, id1, date_time, `status`, test, sex, phone, json, `text`, long_text
+  </sql>
+  <sql id="sql_if_and">
+    <if test="dateTime != null">
+      and date_time = #{dateTime}
+    </if>
+    <if test="status != null">
+      and `status` = #{status}
+    </if>
+    <if test="test != null">
+      and test = #{test}
+    </if>
+    <if test="sex != null">
+      and sex = #{sex}
+    </if>
+    <if test="phone != null">
+      and phone = #{phone}
+    </if>
+    <if test="json != null">
+      and json = #{json}
+    </if>
+    <if test="text != null">
+      and `text` = #{text}
+    </if>
+    <if test="longText != null">
+      and long_text = #{longText}
+    </if>
+  </sql>
+  <sql id="sql_where">
+    <if test="dateTime != null">
+      date_time = #{dateTime},
+    </if>
+    <if test="status != null">
+      `status` = #{status},
+    </if>
+    <if test="test != null">
+      test = #{test},
+    </if>
+    <if test="sex != null">
+      sex = #{sex},
+    </if>
+    <if test="phone != null">
+      phone = #{phone},
+    </if>
+    <if test="json != null">
+      json = #{json},
+    </if>
+    <if test="text != null">
+      `text` = #{text},
+    </if>
+    <if test="longText != null">
+      long_text = #{longText},
+    </if>
+  </sql>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zll.ssm.pojo.Test" useGeneratedKeys="true">
+    insert into test (id1, date_time, `status`, test, sex, phone, json, `text`, 
+      long_text)
+    values (#{id1}, #{dateTime}, #{status}, #{test}, #{sex}, #{phone}, #{json}, #{text}, 
+      #{longText})
+  </insert>
+  <insert id="save" keyColumn="id" keyProperty="id" parameterType="com.zll.ssm.pojo.Test" useGeneratedKeys="true">
+    insert into test
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id1 != null">
+        id1,
+      </if>
+      <if test="dateTime != null">
+        date_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="test != null">
+        test,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="json != null">
+        json,
+      </if>
+      <if test="text != null">
+        `text`,
+      </if>
+      <if test="longText != null">
+        long_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id1 != null">
+        #{id1},
+      </if>
+      <if test="dateTime != null">
+        #{dateTime},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+      <if test="test != null">
+        #{test},
+      </if>
+      <if test="sex != null">
+        #{sex},
+      </if>
+      <if test="phone != null">
+        #{phone},
+      </if>
+      <if test="json != null">
+        #{json},
+      </if>
+      <if test="text != null">
+        #{text},
+      </if>
+      <if test="longText != null">
+        #{longText},
+      </if>
+    </trim>
+    (id1, date_time, `status`, test, sex, phone, json, `text`, long_textid1, date_time, 
+  </insert>
+  <insert id="saveBatch" parameterType="java.util.List">
+    insert into test
+    (id1, date_time, `status`, test, sex, phone, json, `text`, long_text)
+    values 
+    <foreach collection="list" index="index" item="item" separator=",">
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.id1 != null">
+          #{item.id1},
+        </if>
+        <if test="item.id1 == null">
+          NULL,
+        </if>
+        <if test="item.dateTime != null">
+          #{item.dateTime},
+        </if>
+        <if test="item.dateTime == null">
+          NULL,
+        </if>
+        <if test="item.status != null">
+          #{item.status},
+        </if>
+        <if test="item.status == null">
+          NULL,
+        </if>
+        <if test="item.test != null">
+          #{item.test},
+        </if>
+        <if test="item.test == null">
+          NULL,
+        </if>
+        <if test="item.sex != null">
+          #{item.sex},
+        </if>
+        <if test="item.sex == null">
+          NULL,
+        </if>
+        <if test="item.phone != null">
+          #{item.phone},
+        </if>
+        <if test="item.phone == null">
+          NULL,
+        </if>
+        <if test="item.json != null">
+          #{item.json},
+        </if>
+        <if test="item.json == null">
+          NULL,
+        </if>
+        <if test="item.text != null">
+          #{item.text},
+        </if>
+        <if test="item.text == null">
+          NULL,
+        </if>
+        <if test="item.longText != null">
+          #{item.longText},
+        </if>
+        <if test="item.longText == null">
+          NULL,
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <select id="selectById" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from test
+    where id = #{id}
+      and id1 = #{id1}
+  </select>
+  <select id="get" parameterType="com.zll.ssm.pojo.Test" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from test
+    <where>
+      <include refid="sql_if_and" />
+        and id = #{id}
+        and id1 = #{id1}
+    </where>
+  </select>
+  <update id="update" parameterType="com.zll.ssm.pojo.Test">
+    update test
+    <set>
+      <include refid="sql_where" />
+    </set>
+    where id = #{id}
+      and id1 = #{id1}
+  </update>
+  <delete id="delete" parameterType="map">
+    delete from test
+    where id = #{id}
+      and id1 = #{id1}
+  </delete>
+  <select id="selectList" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_column" />
+    from test
+  </select>
+  <select id="total" resultType="java.lang.Integer">
+    select count(1) from test
+  </select>
+</mapper>
